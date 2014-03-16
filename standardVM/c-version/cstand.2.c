@@ -98,76 +98,135 @@ int main(int argc, char *argv[])
        /*begin of dealing with the perodic boundry, move ones near boundry aside*/
         for(i=0; i<N; i++)
         {
-            if(xcor[i]< R && ycor[i]<R) 
-            {
-                xcor_e2[i] = xcor[i] + L;
-                ycor_e2[i] = ycor[i] + L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }
-            /*left buttom*/
-
-            if(xcor[i] < R && ycor[i]>(L - R))
-            {
-                xcor_e2[i] = xcor[i] + L;
-                ycor_e2[i] = ycor[i] - L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }
-            /*left top*/
-
-            if(xcor[i]>(L - R) && ycor[i]<R)
-            {
-                xcor_e2[i] = xcor[i] - L;
-                ycor_e2[i] = ycor[i] + L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }
-            /*right buttom*/
-            if(xcor[i]>(L - R) && ycor[i]>(L-R))
-            {
-                xcor_e2[i] = xcor[i] - L;
-                ycor_e2[i] = ycor[i] - L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }
-            /*right top*/
-
             if(xcor[i] < R)
             {
-                xcor_e1[i] = xcor[i] + L;
-                ycor_e1[i] = ycor[i] ;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
+                if ( ycor[i] < R ) {
+                    xcor_e2[i] = xcor[i] + L;
+                    ycor_e2[i] = ycor[i] + L;
+                    xdir_e2[i] = xdir[i];
+                    ydir_e2[i] = ydir[i];
+                }                               /* left buttom */
+                else if(ycor[i] > (L - R) ){
+                    xcor_e2[i] = xcor[i] + L;
+                    ycor_e2[i] = ycor[i] - L;
+                    xdir_e2[i] = xdir[i];
+                    ydir_e2[i] = ydir[i];
+                }                               /* left top */
+                else {
+                    xcor_e1[i] = xcor[i] + L;
+                    ycor_e1[i] = ycor[i] ;
+                    xdir_e1[i] = xdir[i];
+                    ydir_e1[i] = ydir[i];
+                }                               /* left */
             }
-            /*left*/
-
-            if(ycor[i] < R)
+            else if(xcor[i] > (L - R))
             {
-                xcor_e1[i] = xcor[i] ;
-                ycor_e1[i] = ycor[i] + L;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
+                if (ycor[i] < R  ) {
+                    xcor_e2[i] = xcor[i] - L;
+                    ycor_e2[i] = ycor[i] + L;
+                    xdir_e2[i] = xdir[i];
+                    ydir_e2[i] = ydir[i];
+                }                               /* right buttom */
+                else if(ycor[i] > (L - R)){
+                    xcor_e2[i] = xcor[i] - L;
+                    ycor_e2[i] = ycor[i] - L;
+                    xdir_e2[i] = xdir[i];
+                    ydir_e2[i] = ydir[i];
+                }                               /* right top */
+                else{
+                    xcor_e1[i] = xcor[i] - L;
+                    ycor_e1[i] = ycor[i] ;
+                    xdir_e1[i] = xdir[i];
+                    ydir_e1[i] = ydir[i];
+                }                               /* right */
             }
-            /*buttom*/
-
-            if(xcor[i] > (L -R))
+            else
             {
-                xcor_e1[i] = xcor[i] - L;
-                ycor_e1[i] = ycor[i] ;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
-            }
-            /*right*/
 
-            if(ycor[i] > (L - R))
-            {
-                xcor_e1[i] = xcor[i] ;
-                ycor_e1[i] = ycor[i] - L;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
+                if(ycor[i] < R){
+                    xcor_e1[i] = xcor[i] ;
+                    ycor_e1[i] = ycor[i] + L;
+                    xdir_e1[i] = xdir[i];
+                    ydir_e1[i] = ydir[i];
+                }                               /* buttom */
+                else if(ycor[i] > (L - R)){
+                    xcor_e1[i] = xcor[i] ;
+                    ycor_e1[i] = ycor[i] - L;
+                    xdir_e1[i] = xdir[i];
+                    ydir_e1[i] = ydir[i];
+                }                               /* top */
             }
-            /*top*/
+
+            /*if(xcor[i]< R && ycor[i]<R) */
+            /*{*/
+                /*xcor_e2[i] = xcor[i] + L;*/
+                /*ycor_e2[i] = ycor[i] + L;*/
+                /*xdir_e2[i] = xdir[i];*/
+                /*ydir_e2[i] = ydir[i];*/
+            /*}*/
+            /*[>left buttom<]*/
+
+            /*if(xcor[i] < R && ycor[i]>(L - R))*/
+            /*{*/
+                /*xcor_e2[i] = xcor[i] + L;*/
+                /*ycor_e2[i] = ycor[i] - L;*/
+                /*xdir_e2[i] = xdir[i];*/
+                /*ydir_e2[i] = ydir[i];*/
+            /*}*/
+            /*[>left top<]*/
+
+            /*if(xcor[i]>(L - R) && ycor[i]<R)*/
+            /*{*/
+                /*xcor_e2[i] = xcor[i] - L;*/
+                /*ycor_e2[i] = ycor[i] + L;*/
+                /*xdir_e2[i] = xdir[i];*/
+                /*ydir_e2[i] = ydir[i];*/
+            /*}*/
+            /*[>right buttom<]*/
+            /*if(xcor[i]>(L - R) && ycor[i]>(L-R))*/
+            /*{*/
+                /*xcor_e2[i] = xcor[i] - L;*/
+                /*ycor_e2[i] = ycor[i] - L;*/
+                /*xdir_e2[i] = xdir[i];*/
+                /*ydir_e2[i] = ydir[i];*/
+            /*}*/
+            /*[>right top<]*/
+
+            /*if(xcor[i] < R)*/
+            /*{*/
+                /*xcor_e1[i] = xcor[i] + L;*/
+                /*ycor_e1[i] = ycor[i] ;*/
+                /*xdir_e1[i] = xdir[i];*/
+                /*ydir_e1[i] = ydir[i];*/
+            /*}*/
+            /*[>left<]*/
+
+            /*if(ycor[i] < R)*/
+            /*{*/
+                /*xcor_e1[i] = xcor[i] ;*/
+                /*ycor_e1[i] = ycor[i] + L;*/
+                /*xdir_e1[i] = xdir[i];*/
+                /*ydir_e1[i] = ydir[i];*/
+            /*}*/
+            /*[>buttom<]*/
+
+            /*if(xcor[i] > (L -R))*/
+            /*{*/
+                /*xcor_e1[i] = xcor[i] - L;*/
+                /*ycor_e1[i] = ycor[i] ;*/
+                /*xdir_e1[i] = xdir[i];*/
+                /*ydir_e1[i] = ydir[i];*/
+            /*}*/
+            /*[>right<]*/
+
+            /*if(ycor[i] > (L - R))*/
+            /*{*/
+                /*xcor_e1[i] = xcor[i] ;*/
+                /*ycor_e1[i] = ycor[i] - L;*/
+                /*xdir_e1[i] = xdir[i];*/
+                /*ydir_e1[i] = ydir[i];*/
+            /*}*/
+            /*[>top<]*/
         }
        /*end of dealing with the perodic boundry*/
 
