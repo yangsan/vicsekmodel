@@ -7,7 +7,7 @@
 #define R 1.0
 #define V 0.03
 #define ETA 1.0
-#define STEP 100
+#define STEP 10000
 
 #define random() rand()/(RAND_MAX+1.0)
 
