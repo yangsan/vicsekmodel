@@ -11,7 +11,7 @@
 
 #define random() rand()/(RAND_MAX+1.0)
 
-double distance(double x1, double x2, double y1, double y2);
+double distance(double x, double y);
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
     /*for the perturbation*/
     double x, y;
     /*temps for perturbation*/
+    double dx, dy;
+    /*temps for differences between xcors and ycors*/
     FILE *fp;
     char filename[100];
 /*end of decleration*/
@@ -63,7 +65,7 @@ int main(int argc, char *argv[])
             ydir[i] = -random();
         }
 
-        denominator = sqrt(xdir[i] * xdir[i] + ydir[i] * ydir[i]);
+        denominator = distance(xdir[i], ydir[i]);
         xdir[i] /= denominator;
         ydir[i] /= denominator;
         /*renormalizaiton*/
@@ -176,33 +178,47 @@ int main(int argc, char *argv[])
             sumy = 0;
             for(j=0; j<N; j++)
             {
-                if(distance(xcor[i], xcor[j], ycor[i], ycor[j]) < R)
-                {
-                    sumx += xdir[j];
-                    sumy += ydir[j];
+                dx = abs(xcor[i] - xcor[j]);
+                dy = abs(ycor[i] - ycor[j]);
+                if(dx < R && dy < R){
+                    if(distance(dx, dy) < R)
+                    {
+                        sumx += xdir[j];
+                        sumy += ydir[j];
+                    }
                 }
 
                 if(xcor_e1[j] > 0 && ycor_e1[j] > 0){
-                    if(distance(xcor[i] , xcor_e1[j], ycor[i] , ycor_e1[j]) < R)
-                    {
-                        sumx += xdir_e1[j];
-                        sumy += ydir_e1[j];
-                    } 
+                    dx = abs(xcor[i] - xcor_e1[j]);
+                    dy = abs(ycor[i] - ycor_e1[j]);
+                    if(dx < R && dy < R){
+                        if(distance(dx, dy) < R)
+                        {
+                            sumx += xdir_e1[j];
+                            sumy += ydir_e1[j];
+                        } 
+                    }
                 }
 
                 if(xcor_e2[j] > 0 && ycor_e2[j] > 0){
-                    if(distance(xcor[i] , xcor_e2[j], ycor[i] , ycor_e2[j]) < R)
-                    {
-                        sumx += xdir_e2[j];
-                        sumy += ydir_e2[j];
-                    } 
+                    dx = abs(xcor[i] - xcor_e2[j]);
+                    dy = abs(ycor[i] - ycor_e2[j]);
+                    if(dx < R && dy < R){
+                        if(distance(dx, dy) < R)
+                        {
+                            sumx += xdir_e2[j];
+                            sumy += ydir_e2[j];
+                        } 
+                    }
                 }
+
+
  
             }
 
             xdirt[i] = sumx;
             ydirt[i] = sumy;
-            denominator = sqrt(xdirt[i] * xdirt[i] + ydirt[i] * ydirt[i]);
+            denominator = distance(xdirt[i], ydirt[i]);
             xdirt[i] /= denominator;
             ydirt[i] /= denominator;
             /*end of direction*/
@@ -251,7 +267,7 @@ int main(int argc, char *argv[])
  *  Description:  return the distance of the two points passed in
  * =====================================================================================
  */
-double distance(double x1, double x2, double y1, double y2)
+double distance(double x, double y)
 {
-    return sqrt(pow(x1-x2,2)+pow(y1-y2,2));
+    return sqrt(pow(x,2)+pow(y,2));
 }
