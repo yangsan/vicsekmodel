@@ -7,11 +7,11 @@
 #define R 1.0
 #define V 0.03
 #define ETA 1.0
-#define STEP 1000
-
+#define STEP 10000
+#define PI 3.14159265358979323846
 #define random() rand()/(RAND_MAX+1.0)
 
-int simulation(double xcor[], double ycor[], double xdir[], double ydir[]);
+int simulation(double xcor[], double ycor[], double xdir[], double ydir[], double omega);
 double distance(double x, double y);
 
 int main(int argc, char *argv[])
@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     /*iterator*/
     double denominator;
     /*denominator*/
+    double omega;
     FILE *fp;
     char filename[100];
 /*end of decleration*/
@@ -30,6 +31,8 @@ int main(int argc, char *argv[])
 /*begin of initializing*/
     srand((unsigned int)time(NULL));
     /*initializing the random seed*/
+
+    omega = cos((2./2.)*PI/2.);
 
     for(i=0; i<N; i++)
     {
@@ -64,7 +67,7 @@ int main(int argc, char *argv[])
 /*begin of simulation*/
     for(k=0; k<STEP; k++)
     {
-        simulation(xcor, ycor, xdir, ydir);
+        simulation(xcor, ycor, xdir, ydir, omega);
         sprintf(filename, "./data/%i.out", k);
         fp = fopen(filename,"w");
         for(i = 0;i<N;i++)
@@ -89,7 +92,7 @@ int main(int argc, char *argv[])
  * =====================================================================================
  */
 
-int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
+int simulation(double xcor[], double ycor[], double xdir[], double ydir[], double omega){
 
     double xcor_e1[N], ycor_e1[N], xcor_e2[N], ycor_e2[N], xdir_e1[N], ydir_e1[N], xdir_e2[N], ydir_e2[N];
     /*perodic boudry*/
@@ -102,7 +105,7 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
     /*the sum of neighbors' directions*/
     double x, y;
     /*temps for perturbation*/
-    double dx, dy;
+    double dx, dy, dis;
     /*temps for differences between xcors and ycors*/
     double theta;
     /*for perturbation*/
@@ -210,10 +213,11 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
         sumy = 0;
         for(j=0; j<N; j++)
         {
-            dx = abs(xcor[i] - xcor[j]);
-            dy = abs(ycor[i] - ycor[j]);
-            if(dx < R && dy < R){
-                if(distance(dx, dy) < R)
+            dx = xcor[j] - xcor[i];
+            dy = ycor[j] - ycor[i];
+            if(abs(dx) < R && abs(dy) < R){
+                dis = distance(dx, dy);
+                if(dis ==0 || (dis < R /*&& (dx*xdir[i]+dy*ydir[i])/dis > omega*/))
                 {
                     sumx += xdir[j];
                     sumy += ydir[j];
@@ -221,10 +225,11 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
             }
 
             if(xcor_e1[j] > 0 && ycor_e1[j] > 0){
-                dx = abs(xcor[i] - xcor_e1[j]);
-                dy = abs(ycor[i] - ycor_e1[j]);
-                if(dx < R && dy < R){
-                    if(distance(dx, dy) < R)
+                dx = xcor_e1[j] - xcor[i];
+                dy = ycor_e1[j] - ycor[i];
+                if(abs(dx) < R && abs(dy) < R){
+                    dis = distance(dx, dy);
+                    if(dis == 0 || (dis < R /*&& (dx*xdir[i]+dy*ydir[i])/dis > omega*/))
                     {
                         sumx += xdir_e1[j];
                         sumy += ydir_e1[j];
@@ -233,18 +238,17 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
             }
 
             if(xcor_e2[j] > 0 && ycor_e2[j] > 0){
-                dx = abs(xcor[i] - xcor_e2[j]);
-                dy = abs(ycor[i] - ycor_e2[j]);
-                if(dx < R && dy < R){
-                    if(distance(dx, dy) < R)
+                dx = xcor_e2[j] - xcor[i];
+                dy = ycor_e2[j] - ycor[i];
+                if(abs(dx) < R && abs(dy) < R){
+                    dis = distance(dx, dy);
+                    if(dis == 0 || (dis < R /*&& (dx*xdir[i]+dy*ydir[i])/dis > omega*/))
                     {
                         sumx += xdir_e2[j];
                         sumy += ydir_e2[j];
                     } 
                 }
             }
-
-
 
         }
 
