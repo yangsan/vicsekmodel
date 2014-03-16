@@ -7,7 +7,7 @@
 #define R 1.0
 #define V 0.03
 #define ETA 1.0
-#define STEP 10000
+#define STEP 1000
 
 #define random() rand()/(RAND_MAX+1.0)
 
@@ -156,77 +156,6 @@ int main(int argc, char *argv[])
                     ydir_e1[i] = ydir[i];
                 }                               /* top */
             }
-
-            /*if(xcor[i]< R && ycor[i]<R) */
-            /*{*/
-                /*xcor_e2[i] = xcor[i] + L;*/
-                /*ycor_e2[i] = ycor[i] + L;*/
-                /*xdir_e2[i] = xdir[i];*/
-                /*ydir_e2[i] = ydir[i];*/
-            /*}*/
-            /*[>left buttom<]*/
-
-            /*if(xcor[i] < R && ycor[i]>(L - R))*/
-            /*{*/
-                /*xcor_e2[i] = xcor[i] + L;*/
-                /*ycor_e2[i] = ycor[i] - L;*/
-                /*xdir_e2[i] = xdir[i];*/
-                /*ydir_e2[i] = ydir[i];*/
-            /*}*/
-            /*[>left top<]*/
-
-            /*if(xcor[i]>(L - R) && ycor[i]<R)*/
-            /*{*/
-                /*xcor_e2[i] = xcor[i] - L;*/
-                /*ycor_e2[i] = ycor[i] + L;*/
-                /*xdir_e2[i] = xdir[i];*/
-                /*ydir_e2[i] = ydir[i];*/
-            /*}*/
-            /*[>right buttom<]*/
-            /*if(xcor[i]>(L - R) && ycor[i]>(L-R))*/
-            /*{*/
-                /*xcor_e2[i] = xcor[i] - L;*/
-                /*ycor_e2[i] = ycor[i] - L;*/
-                /*xdir_e2[i] = xdir[i];*/
-                /*ydir_e2[i] = ydir[i];*/
-            /*}*/
-            /*[>right top<]*/
-
-            /*if(xcor[i] < R)*/
-            /*{*/
-                /*xcor_e1[i] = xcor[i] + L;*/
-                /*ycor_e1[i] = ycor[i] ;*/
-                /*xdir_e1[i] = xdir[i];*/
-                /*ydir_e1[i] = ydir[i];*/
-            /*}*/
-            /*[>left<]*/
-
-            /*if(ycor[i] < R)*/
-            /*{*/
-                /*xcor_e1[i] = xcor[i] ;*/
-                /*ycor_e1[i] = ycor[i] + L;*/
-                /*xdir_e1[i] = xdir[i];*/
-                /*ydir_e1[i] = ydir[i];*/
-            /*}*/
-            /*[>buttom<]*/
-
-            /*if(xcor[i] > (L -R))*/
-            /*{*/
-                /*xcor_e1[i] = xcor[i] - L;*/
-                /*ycor_e1[i] = ycor[i] ;*/
-                /*xdir_e1[i] = xdir[i];*/
-                /*ydir_e1[i] = ydir[i];*/
-            /*}*/
-            /*[>right<]*/
-
-            /*if(ycor[i] > (L - R))*/
-            /*{*/
-                /*xcor_e1[i] = xcor[i] ;*/
-                /*ycor_e1[i] = ycor[i] - L;*/
-                /*xdir_e1[i] = xdir[i];*/
-                /*ydir_e1[i] = ydir[i];*/
-            /*}*/
-            /*[>top<]*/
         }
        /*end of dealing with the perodic boundry*/
 
@@ -253,18 +182,21 @@ int main(int argc, char *argv[])
                     sumy += ydir[j];
                 }
 
-                if(distance(xcor[i] , xcor_e1[j], ycor[i] , ycor_e1[j]) < R)
-                {
-                    sumx += xdir_e1[j];
-                    sumy += ydir_e1[j];
-                } 
+                if(xcor_e1[j] > 0 && ycor_e1[j] > 0){
+                    if(distance(xcor[i] , xcor_e1[j], ycor[i] , ycor_e1[j]) < R)
+                    {
+                        sumx += xdir_e1[j];
+                        sumy += ydir_e1[j];
+                    } 
+                }
 
-                
-                if(distance(xcor[i] , xcor_e2[j], ycor[i] , ycor_e2[j]) < R)
-                {
-                    sumx += xdir_e2[j];
-                    sumy += ydir_e2[j];
-                } 
+                if(xcor_e2[j] > 0 && ycor_e2[j] > 0){
+                    if(distance(xcor[i] , xcor_e2[j], ycor[i] , ycor_e2[j]) < R)
+                    {
+                        sumx += xdir_e2[j];
+                        sumy += ydir_e2[j];
+                    } 
+                }
  
             }
 
