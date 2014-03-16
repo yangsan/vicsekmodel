@@ -3,13 +3,15 @@
 #include <math.h>
 
 #define N 100
-#define L 5
+#define L 15
 #define R 1.0
 #define V 0.03
 #define ETA 1.0
 #define STEP 10000
 
 #define random() rand()/(RAND_MAX+1.0)
+
+double distance(double x1, double x2, double y1, double y2);
 
 int main(int argc, char *argv[])
 {
@@ -24,8 +26,6 @@ int main(int argc, char *argv[])
     /*iterators*/
     double denominator;
     /*denominator*/
-    double distance;
-    /*distance*/
     double sumx, sumy;
     /*the sum of neighbors' directions*/
     double theta;
@@ -188,22 +188,20 @@ int main(int argc, char *argv[])
             sumy = 0;
             for(j=0; j<N; j++)
             {
-                distance = ((xcor[i] - xcor[j]) * (xcor[i] - xcor[j])) + ((ycor[i] - ycor[j]) * (ycor[i] - ycor[j]));
-                if(distance < R)
+                if(distance(xcor[i], xcor[j], ycor[i], ycor[j]) < R)
                 {
                     sumx += xdir[j];
                     sumy += ydir[j];
                 }
 
-                distance = ((xcor[i] - xcor_e1[j]) * (xcor[i] - xcor_e1[j])) + ((ycor[i] - ycor_e1[j]) * (ycor[i] - ycor_e1[j]));
-                if(distance < R)
+                if(distance(xcor[i] , xcor_e1[j], ycor[i] , ycor_e1[j]) < R)
                 {
                     sumx += xdir_e1[j];
                     sumy += ydir_e1[j];
                 } 
 
-                distance = ((xcor[i] - xcor_e2[j]) * (xcor[i] - xcor_e2[j])) + ((ycor[i] - ycor_e2[j]) * (ycor[i] - ycor_e2[j]));
-                if(distance < R)
+                
+                if(distance(xcor[i] , xcor_e2[j], ycor[i] , ycor_e2[j]) < R)
                 {
                     sumx += xdir_e2[j];
                     sumy += ydir_e2[j];
@@ -253,4 +251,16 @@ int main(int argc, char *argv[])
     return 0;
 /*begin of cleanup*/
 /*end of cleanup*/
+}
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  distance
+ *  Description:  return the distance of the two points passed in
+ * =====================================================================================
+ */
+double distance(double x1, double x2, double y1, double y2)
+{
+    return sqrt(pow(x1-x2,2)+pow(y1-y2,2));
 }
