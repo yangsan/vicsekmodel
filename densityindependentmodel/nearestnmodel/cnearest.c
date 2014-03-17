@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 100
-#define L 15
-#define R 1.0
+#define N 400
+#define L 10
 #define V 0.03
 #define ETA 1.0
 #define STEP 10000
-#define NC 6
+#define NC 12
 
 #define random() rand()/(RAND_MAX+1.0)
 

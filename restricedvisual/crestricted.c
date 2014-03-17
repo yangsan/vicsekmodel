@@ -3,11 +3,11 @@
 #include <math.h>
 
 #define N 100
-#define L 15
+#define L 5
 #define R 1.0
 #define V 0.03
 #define ETA 1.0
-#define STEP 10000
+#define STEP 1000
 #define PI 3.14159265358979323846
 #define random() rand()/(RAND_MAX+1.0)
 
@@ -32,8 +32,9 @@ int main(int argc, char *argv[])
     srand((unsigned int)time(NULL));
     /*initializing the random seed*/
 
-    omega = cos((2./2.)*PI/2.);
+    omega = cos((3./2.)*PI/2.);
 
+    printf("%f",omega);
     for(i=0; i<N; i++)
     {
         xcor[i] = random()*L;
@@ -217,7 +218,7 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[], doubl
             dy = ycor[j] - ycor[i];
             if(abs(dx) < R && abs(dy) < R){
                 dis = distance(dx, dy);
-                if(dis ==0 || (dis < R /*&& (dx*xdir[i]+dy*ydir[i])/dis > omega*/))
+                if(dis ==0 || (dis < R && (dx*xdir[i]+dy*ydir[i])/dis > omega))
                 {
                     sumx += xdir[j];
                     sumy += ydir[j];
@@ -229,7 +230,7 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[], doubl
                 dy = ycor_e1[j] - ycor[i];
                 if(abs(dx) < R && abs(dy) < R){
                     dis = distance(dx, dy);
-                    if(dis == 0 || (dis < R /*&& (dx*xdir[i]+dy*ydir[i])/dis > omega*/))
+                    if(dis == 0 || (dis < R && (dx*xdir[i]+dy*ydir[i])/dis > omega))
                     {
                         sumx += xdir_e1[j];
                         sumy += ydir_e1[j];
@@ -242,7 +243,7 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[], doubl
                 dy = ycor_e2[j] - ycor[i];
                 if(abs(dx) < R && abs(dy) < R){
                     dis = distance(dx, dy);
-                    if(dis == 0 || (dis < R /*&& (dx*xdir[i]+dy*ydir[i])/dis > omega*/))
+                    if(dis == 0 || (dis < R && (dx*xdir[i]+dy*ydir[i])/dis > omega))
                     {
                         sumx += xdir_e2[j];
                         sumy += ydir_e2[j];

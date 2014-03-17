@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 100
-#define L 5
+#define N 400
+#define L 10
 #define R 1.0
 #define V 0.03
 #define ETA 0.5
-#define STEP 10000
-#define NC 6
+#define STEP 500000
+#define NC 12
 #define PI 3.14159265358979323846
 
 #define random() rand()/(RAND_MAX+1.0)
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     srand((unsigned int)time(NULL));
     /*initializing the random seed*/
 
-    omega = cos((0./3.)*PI/2.);
+    omega = cos((2./2.)*PI/2.);
 
     for(i=0; i<N; i++)
     {
