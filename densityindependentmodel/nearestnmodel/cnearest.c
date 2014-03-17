@@ -8,11 +8,12 @@
 #define V 0.03
 #define ETA 1.0
 #define STEP 10000
+#define NC 6
 
 #define random() rand()/(RAND_MAX+1.0)
 
 int simulation(double xcor[], double ycor[], double xdir[], double ydir[]);
-double distance(double x, double y);
+double distance(double x1, double y1, double x2, double y2);
 
 int main(int argc, char *argv[])
 {
@@ -54,7 +55,7 @@ int main(int argc, char *argv[])
             ydir[i] = -random();
         }
 
-        denominator = distance(xdir[i], ydir[i]);
+        denominator = distance(xdir[i], ydir[i],0.0, 0.0);
         xdir[i] /= denominator;
         ydir[i] /= denominator;
         /*renormalizaiton*/
@@ -91,36 +92,25 @@ int main(int argc, char *argv[])
 
 int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
 
-    double xcor_e1[N], ycor_e1[N], xcor_e2[N], ycor_e2[N], xdir_e1[N], ydir_e1[N], xdir_e2[N], ydir_e2[N];
-    /*perodic boudry*/
+    double fordistance[N * 9];
+    int forlabel[N * 9];
+    double temp;
+    int inttemp;
     double xcort[N], ycort[N], xdirt[N], ydirt[N];
     /*temps for simulation*/
-    int i, j;
+    int i, j, k;
     double denominator;
     /*denominator*/
     double sumx, sumy;
     /*the sum of neighbors' directions*/
     double x, y;
     /*temps for perturbation*/
-    double dx, dy;
-    /*temps for differences between xcors and ycors*/
     double theta;
     /*for perturbation*/
  
    /*begin of initializing for everytime step simulation*/
     for(i=0; i<N; i++) 
     {
-        xcor_e1[i] = -10;
-        ycor_e1[i] = -10;
-        xdir_e1[i] = 0;
-        ydir_e1[i] = 0;
-
-        xcor_e2[i] = -10;
-        ycor_e2[i] = -10;
-        xdir_e2[i] = 0;
-        ydir_e2[i] = 0;
-        /*perodic boundry*/
-       
         xcort[i] = 0;
         ycort[i] = 0;
         xdirt[i] = 0;
@@ -128,70 +118,6 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
         /*temps*/
     }
     /*end of initializing for everytime step simulation*/
-
-    /*begin of dealing with the perodic boundry, move ones near boundry aside*/
-    for(i=0; i<N; i++)
-    {
-        if(xcor[i] < R)
-        {
-            if ( ycor[i] < R ) {
-                xcor_e2[i] = xcor[i] + L;
-                ycor_e2[i] = ycor[i] + L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }                               /* left buttom */
-            else if(ycor[i] > (L - R) ){
-                xcor_e2[i] = xcor[i] + L;
-                ycor_e2[i] = ycor[i] - L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }                               /* left top */
-            else {
-                xcor_e1[i] = xcor[i] + L;
-                ycor_e1[i] = ycor[i] ;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
-            }                               /* left */
-        }
-        else if(xcor[i] > (L - R))
-        {
-            if (ycor[i] < R  ) {
-                xcor_e2[i] = xcor[i] - L;
-                ycor_e2[i] = ycor[i] + L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }                               /* right buttom */
-            else if(ycor[i] > (L - R)){
-                xcor_e2[i] = xcor[i] - L;
-                ycor_e2[i] = ycor[i] - L;
-                xdir_e2[i] = xdir[i];
-                ydir_e2[i] = ydir[i];
-            }                               /* right top */
-            else{
-                xcor_e1[i] = xcor[i] - L;
-                ycor_e1[i] = ycor[i] ;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
-            }                               /* right */
-        }
-        else
-        {
-
-            if(ycor[i] < R){
-                xcor_e1[i] = xcor[i] ;
-                ycor_e1[i] = ycor[i] + L;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
-            }                               /* buttom */
-            else if(ycor[i] > (L - R)){
-                xcor_e1[i] = xcor[i] ;
-                ycor_e1[i] = ycor[i] - L;
-                xdir_e1[i] = xdir[i];
-                ydir_e1[i] = ydir[i];
-            }                               /* top */
-        }
-    }
-   /*end of dealing with the perodic boundry*/
 
     /*begin of simulation*/
     for(i=0; i<N; i++)
@@ -210,47 +136,54 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
         sumy = 0;
         for(j=0; j<N; j++)
         {
-            dx = abs(xcor[i] - xcor[j]);
-            dy = abs(ycor[i] - ycor[j]);
-            if(dx < R && dy < R){
-                if(distance(dx, dy) < R)
-                {
-                    sumx += xdir[j];
-                    sumy += ydir[j];
-                }
-            }
+            fordistance[j] = distance(xcor[i], ycor[i], xcor[j], ycor[j]);
+            forlabel[j] = j;
 
-            if(xcor_e1[j] > 0 && ycor_e1[j] > 0){
-                dx = abs(xcor[i] - xcor_e1[j]);
-                dy = abs(ycor[i] - ycor_e1[j]);
-                if(dx < R && dy < R){
-                    if(distance(dx, dy) < R)
-                    {
-                        sumx += xdir_e1[j];
-                        sumy += ydir_e1[j];
-                    } 
-                }
-            }
+            fordistance[j + N] = distance(xcor[i], ycor[i], xcor[j]-L, ycor[j]+L);
+            forlabel[j + N] = j;
 
-            if(xcor_e2[j] > 0 && ycor_e2[j] > 0){
-                dx = abs(xcor[i] - xcor_e2[j]);
-                dy = abs(ycor[i] - ycor_e2[j]);
-                if(dx < R && dy < R){
-                    if(distance(dx, dy) < R)
-                    {
-                        sumx += xdir_e2[j];
-                        sumy += ydir_e2[j];
-                    } 
-                }
-            }
+            fordistance[j + 2*N] = distance(xcor[i], ycor[i], xcor[j], ycor[j]+L);
+            forlabel[j + 2*N] = j;
 
+            fordistance[j + 3*N] = distance(xcor[i], ycor[i], xcor[j]+L, ycor[j]+L);
+            forlabel[j + 3*N] = j;
 
+            fordistance[j + 4*N] = distance(xcor[i], ycor[i], xcor[j]-L, ycor[j]);
+            forlabel[j + 4*N] = j;
 
+            fordistance[j + 5*N] = distance(xcor[i], ycor[i], xcor[j]+L, ycor[j]);
+            forlabel[j + 5*N] = j;
+
+            fordistance[j + 6*N] = distance(xcor[i], ycor[i], xcor[j]- L, ycor[j] - L);
+            forlabel[j + 6*N] = j;
+
+            fordistance[j + 7*N] = distance(xcor[i], ycor[i], xcor[j], ycor[j] - L);
+            forlabel[j + 7*N] = j;
+
+            fordistance[j + 8*N] = distance(xcor[i], ycor[i], xcor[j] + L, ycor[j] - L);
+            forlabel[j + 8*N] = j;
         }
+
+        for(j=0 ; j< NC; j++){
+            for(k = j; k< N*9; k++){
+                if(fordistance[j] > fordistance[k]){
+                   temp = fordistance[j];
+                   fordistance[j] = fordistance[k];
+                   fordistance[k] = temp;
+
+                   inttemp = forlabel[j];
+                   forlabel[j] = forlabel[k];
+                   forlabel[k] = inttemp;
+                }
+            }
+            sumx += xdir[forlabel[j]];
+            sumy += ydir[forlabel[j]];
+        }
+
 
         xdirt[i] = sumx;
         ydirt[i] = sumy;
-        denominator = distance(xdirt[i], ydirt[i]);
+        denominator = distance(xdirt[i], ydirt[i],0.0,0.0);
         xdirt[i] /= denominator;
         ydirt[i] /= denominator;
         /*end of direction*/
@@ -285,7 +218,7 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[]){
  *  Description:  return the distance of the two points passed in
  * =====================================================================================
  */
-double distance(double x, double y)
+double distance(double x1, double y1, double x2, double y2)
 {
-    return sqrt(pow(x,2)+pow(y,2));
+    return sqrt(pow(x1 - x2,2)+pow(y1 - y2,2));
 }
