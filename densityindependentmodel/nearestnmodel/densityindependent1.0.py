@@ -13,7 +13,7 @@ import matplotlib.animation as animation
 class ScatterAnim(object):
     def __init__(self):
         self.N =100 #the number of the agents
-        self.L = 5 #the size of the area the simulation is carried out
+        self.L = 15 #the size of the area the simulation is carried out
 #        self.r = 1. #the interaction radius
         self.v = 0.03 #the absolute velocity of the agents
         self.eta = 1.0 #the noise
