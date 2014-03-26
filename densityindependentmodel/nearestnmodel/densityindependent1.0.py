@@ -156,7 +156,7 @@ class ScatterAnim(object):
             self.costemp = np.copy(self.las[3,:])
 
             self.las[2,:] = self.sintemp*np.cos(self.theta1)+self.costemp*np.sin(self.theta1)
-            self.las[3,:] = self.costemp*np.cos(self.theta2)-self.sintemp*np.sin(self.theta2)
+            self.las[3,:] = self.costemp*np.cos(self.theta1)-self.sintemp*np.sin(self.theta1)
 
 
 
