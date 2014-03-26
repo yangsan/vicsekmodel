@@ -305,7 +305,6 @@ int simulation(double xcor[], double ycor[], double xdir[], double ydir[], doubl
         y = ydirt[i];
         theta = random() * ETA - ETA/2.0; 
         xdirt[i] = x * cos(theta) + y * sin(theta);
-        theta = random() * ETA - ETA/2.0; 
         ydirt[i] = y * cos(theta) - x * sin(theta);
         /*end of perturbation*/
     }
