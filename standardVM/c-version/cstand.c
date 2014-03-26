@@ -223,7 +223,6 @@ int main(int argc, char *argv[])
             y = ydirt[i];
             theta = random() * ETA - ETA/2.0; 
             xdirt[i] = x * cos(theta) + y * sin(theta);
-            theta = random() * ETA - ETA/2.0; 
             ydirt[i] = y * cos(theta) - x * sin(theta);
             /*end of perturbation*/
         }
