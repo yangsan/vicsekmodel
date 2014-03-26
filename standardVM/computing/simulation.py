@@ -105,7 +105,7 @@ def simulation(fore, N, L, eta):
     costemp = np.copy(las[3, :])
 
     las[2, :] = sintemp * np.cos(theta1) + costemp * np.sin(theta1)
-    las[3, :] = costemp * np.cos(theta2) - sintemp * np.sin(theta2)
+    las[3, :] = costemp * np.cos(theta1) - sintemp * np.sin(theta1)
     #######################
 
     #fore = np.copy(las)
