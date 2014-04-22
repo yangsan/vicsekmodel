@@ -130,6 +130,5 @@ def radiant(a, b, c):
     return np.degrees(np.arccos(cos))
 
 if __name__ == "__main__":
-    print "Hello world"
     flip = Flipping()
     plt.show()
